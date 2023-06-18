@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import HeadPage from "./HeadPage";
 
+
 const SignUpPage = () => {
   const navTo=useNavigate();
   const [passwordState,setPasswordState]=useState("");
@@ -28,7 +29,7 @@ const SignUpPage = () => {
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (signUpInfo) => {
-        console.log(signUpInfo)
+        console.log("signUpInfo")
         try {
             const response=await fetch("https://short-url-backend.vercel.app/signup",
             {
