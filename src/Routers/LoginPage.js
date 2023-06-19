@@ -38,7 +38,7 @@ const LoginPage = () => {
             if(data.message==="login success"){
               localStorage.setItem("url-short-token",data.token)
               localStorage.setItem("url-short-email", data.email)
-              console.log("Logged in")
+              navTo('/urlpage')
             }
             else{
               setLoginInfo(data.message)
