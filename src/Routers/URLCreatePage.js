@@ -21,6 +21,7 @@ const URLCreatePage = () => {
             console.log(error)
         }
         getUrlList();
+    }
   return (
     <>
     <HeadPage/>
