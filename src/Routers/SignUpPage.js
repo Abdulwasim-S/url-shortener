@@ -4,12 +4,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import HeadPage from "./HeadPage";
 
-
 const SignUpPage = () => {
   const navTo=useNavigate();
   const [passwordState,setPasswordState]=useState("");
+  const [signup_response,setResponse]=useState("");
   const fieldValidationSchema = yup.object({
-    username: yup
+    userName: yup
       .string()
       .required("Please enter valid username"),
     email: yup
@@ -29,7 +29,7 @@ const SignUpPage = () => {
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (signUpInfo) => {
-        console.log("signUpInfo")
+        console.log(signUpInfo)
         try {
             const response=await fetch("https://short-url-backend.vercel.app/signup",
             {
@@ -41,9 +41,14 @@ const SignUpPage = () => {
             }
             );
             const data=await response.json();
-            localStorage.setItem("url-short-email",data.newUser.email)
+            
             if(data.message === "Check your mail for activation link"){
-              navTo('/')
+              setResponse("")
+              localStorage.setItem("url-short-email",data.newUser.email);
+              navTo('/login')
+            }
+            else{
+              setResponse(data.message)
             }
               
         } catch (error) {
@@ -127,8 +132,9 @@ const SignUpPage = () => {
         </div>
       </form>
       <div>
+        <span className="text-danger">{signup_response}</span><br/>
         <NavLink className="mb-3" to='forgetpassword'>Forget Password</NavLink><br/>
-        <NavLink className="mb-3" to='login'>LogIn</NavLink>
+        <NavLink className="mb-3" to='signup'>SignUp</NavLink>
       </div>
     </div>
   );

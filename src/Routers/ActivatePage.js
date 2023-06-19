@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import HeadPage from "./HeadPage";
 
 const ActivatePage = () => {
   const [show,setShow]=useState("Please wait...")
@@ -20,7 +21,7 @@ const ActivatePage = () => {
     setShow(data.message)
   }
   activation();
-  return <div>{show}</div>;
+  return <div><HeadPage/><br/>{show}</div>;
 };
 
 export default ActivatePage;
