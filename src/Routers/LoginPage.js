@@ -5,6 +5,7 @@ import * as yup from "yup";
 const LoginPage = () => {
   const navTo=useNavigate();
   const [state,setState]=useState(false);
+  const [loginInfo,setLoginInfo]=useState("");
   const fieldValidationSchema = yup.object({
     email: yup
       .string()
@@ -23,6 +24,7 @@ const LoginPage = () => {
       validationSchema: fieldValidationSchema,
       onSubmit: async (loginInfo) => {
         try {
+          setLoginInfo("")
             const response=await fetch("https://short-url-backend.vercel.app/login",
             {
               method: "POST",
@@ -33,7 +35,14 @@ const LoginPage = () => {
             }
             );
             const data=await response.json();
-            console.log(data)
+            if(data.message==="login success"){
+              localStorage.setItem("url-short-token",data.token)
+              localStorage.setItem("url-short-email", data.email)
+              console.log("Logged in")
+            }
+            else{
+              setLoginInfo(data.message)
+            }
               
         } catch (error) {
             console.log("Error....",error)
@@ -82,14 +91,15 @@ const LoginPage = () => {
         </div>
         <div className="text-center m-3">
           {state && <p className="text-danger">Invalid credentials</p>}
+          {loginInfo}
           <button type="submit" className="btn btn-success px-5">
             LogIn
           </button>
         </div>
       </form>
       <div>
-        <NavLink className="mb-3" to='forgetpassword'>Forget Password</NavLink><br/>
-        <NavLink className="mb-3" to='signup'>SignUp</NavLink>
+        <NavLink className="mb-3" to='/forgetpassword'>Forget Password</NavLink><br/>
+        <NavLink className="mb-3" to='/signup'>SignUp</NavLink>
       </div>
     </div>
   );
