@@ -29,7 +29,8 @@ const SignUpPage = () => {
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (signUpInfo) => {
-        console.log(signUpInfo)
+        setResponse("Please wait....")
+        localStorage.setItem("url-short-email",signUpInfo.email);
         try {
             const response=await fetch("https://short-url-backend.vercel.app/signup",
             {
@@ -44,8 +45,7 @@ const SignUpPage = () => {
             
             if(data.message === "Check your mail for activation link"){
               setResponse("")
-              localStorage.setItem("url-short-email",data.newUser.email);
-              navTo('/login')
+              navTo('/checkmail')
             }
             else{
               setResponse(data.message)
@@ -57,14 +57,14 @@ const SignUpPage = () => {
       },
     });
     function testPassword(password){
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.[a-z])[a-zA-z-9].{8,15}$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.[a-z])[a-zA-z-9].{8,15}$/;
         if(passwordRegex.test(password)){
             values.password=password;
             setPasswordState("");
         }
         else{
             values.password="";
-            setPasswordState("*password must contain Uppercase,lowercase,number,symbol,min-length should be 8");
+            setPasswordState("*password must contain Uppercase,lowercase,number,min-length should be 8");
         }
     }
 

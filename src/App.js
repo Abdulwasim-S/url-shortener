@@ -4,6 +4,7 @@ import LoginPage from './Routers/LoginPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import SignUpPage from './Routers/SignUpPage';
 import ActivatePage from './Routers/ActivatePage';
+import CheckMail from './Routers/CheckMail';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes exact path = "/">
         <Route path = "/" element={<SignUpPage/>}/>
         <Route path='/activation' element={<ActivatePage/>}></Route>
+        <Route path='/checkmail' element={<CheckMail/>}/>
       </Routes>
     </div>
   );
