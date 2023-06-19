@@ -10,7 +10,7 @@ const ResetPage = () => {
   const fieldValidationSchema = yup.object({
     conformPassword: yup
       .string()
-      .required("Please conform"),
+      .required("Please conform password"),
     password: yup
       .string()
       .required("Please enter valid password"),
