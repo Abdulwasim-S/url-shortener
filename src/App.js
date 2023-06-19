@@ -12,7 +12,9 @@ function App() {
   return (
     <div className="App">
       <Routes exact path = "/">
-        <Route path = "/" element={<SignUpPage/>}/>
+        <Route path='/' element={<LoginPage/>}/>
+        <Route path = "/signup" element={<SignUpPage/>}/>
+        <Route path = "/login" element={<LoginPage/>}/>
         <Route path='/activation' element={<ActivatePage/>}></Route>
         <Route path='/checkmail' element={<CheckMail/>}/>
         <Route path='/forgetpassword' element={<Forgetpassword/>}/>
