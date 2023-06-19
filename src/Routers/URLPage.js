@@ -17,6 +17,7 @@ const URLPage = () => {
             console.log(error)
         }
     }
+    getUrlList()
   return (
     <div>URLPage</div>
   )
