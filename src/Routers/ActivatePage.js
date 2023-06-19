@@ -21,7 +21,7 @@ const ActivatePage = () => {
     setShow(data.message)
   }
   activation();
-  return <div><HeadPage/><br/>{show}</div>;
+  return <div><HeadPage/><br/>{show}<br/><a href="/login"> click to login page</a></div>;
 };
 
 export default ActivatePage;
