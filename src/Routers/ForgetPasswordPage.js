@@ -1,11 +1,12 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import HeaderPage from "./HeaderPage";
+import HeadPage from "./HeadPage";
 
 const Forgetpassword = () => {
   const navTo=useNavigate();
+  const [state,setState]=useState("")
   const fieldValidationSchema = yup.object({
     email: yup
       .string()
@@ -20,9 +21,10 @@ const Forgetpassword = () => {
       validationSchema: fieldValidationSchema,
       onSubmit: async (loginInfo) => {
         try {
+          setState("Please wait...");
             const response=await fetch("https://short-url-backend.vercel.app/forgetpassword",
             {
-              method: "POST",
+              method: "PUT",
               body: JSON.stringify(loginInfo),
               headers: {
                 "Content-Type": "application/json",
@@ -32,11 +34,11 @@ const Forgetpassword = () => {
             const data=await response.json();
             if(data.token) {
               localStorage.setItem("forget-password-token", data.token);
-              localStorage.setItem("password-resetting-mail",loginInfo.email);
-              navTo('/checkmail')
+              localStorage.setItem("url-short-email",loginInfo.email);
+              navTo('/checkmail');
             }
             else{
-              console.log(data.message)
+              setState(data.message);
             }
               
         } catch (error) {
@@ -47,7 +49,7 @@ const Forgetpassword = () => {
 
   return (
     <div className="">
-      <HeaderPage/>
+      <HeadPage/>
         <h1>Forget Password</h1>
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -73,8 +75,9 @@ const Forgetpassword = () => {
           </button>
         </div>
       </form>
+      <small className="">{state}</small>
       <div>
-        <NavLink className="mb-3" to='/'>back to login page</NavLink>
+        <NavLink className="mb-3" to='/login'>back to login page</NavLink>
       </div>
     </div>
     

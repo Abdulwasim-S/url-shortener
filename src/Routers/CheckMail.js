@@ -5,7 +5,7 @@ const CheckMail = () => {
   return (
     <div>
         <HeadPage/><br/>
-        <p>Check your mail for the activation link</p>
+        <p>Check your mail please</p>
     </div>
   )
 }

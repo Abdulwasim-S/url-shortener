@@ -134,8 +134,8 @@ const SignUpPage = () => {
       </form>
       <div>
         <span className="text-danger">{signup_response}</span><br/>
-        <NavLink className="mb-3" to='forgetpassword'>Forget Password</NavLink><br/>
-        <NavLink className="mb-3" to='signup'>SignUp</NavLink>
+        <NavLink className="mb-3" to='/forgetpassword'>Forget Password</NavLink><br/>
+        <NavLink className="mb-3" to='/login'>LogIn</NavLink>
       </div>
     </div>
   );
