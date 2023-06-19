@@ -5,7 +5,22 @@ import { AppContext } from '../App'
 import { Outlet } from 'react-router-dom'
 
 const URLCreatePage = () => {
-    const{urlList,setUrlList}=useContext(AppContext)
+    const{urlList,setUrlList}=useContext(AppContext);
+    async function getUrlList(){
+        try {
+            console.log("it is working")
+            const response=await fetch("https://short-url-backend.vercel.app/shorturl");
+            const data=await response.json();
+            if(data.shorturls){
+                setUrlList(...data.shorturls);
+            }
+            else{
+                setUrlList([]);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        getUrlList();
   return (
     <>
     <HeadPage/>

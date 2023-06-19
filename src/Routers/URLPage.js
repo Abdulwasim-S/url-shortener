@@ -5,7 +5,7 @@ const URLPage = () => {
     const{urlList,setUrlList}=useContext(AppContext);
     async function getUrlList(){
         try {
-            console.log("itis working")
+            console.log("it is working")
             const response=await fetch("https://short-url-backend.vercel.app/shorturl");
             const data=await response.json();
             if(data.shorturls){
