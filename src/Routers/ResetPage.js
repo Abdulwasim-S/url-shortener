@@ -24,6 +24,7 @@ const ResetPage = () => {
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (loginInfo) => {
+        setState("Please wait");
         try {
             if(loginInfo.password !== loginInfo.conformPassword){
                 return setState("Password doesn't match")
@@ -51,6 +52,7 @@ const ResetPage = () => {
             }
             
         } catch (error) {
+            setState("Try again...")
             console.log("Error....",error)
         }
       },
