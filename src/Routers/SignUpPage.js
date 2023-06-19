@@ -52,6 +52,7 @@ const SignUpPage = () => {
             }
               
         } catch (error) {
+          setResponse("Try Again...")
             console.log("Error....",error)
         }
       },
