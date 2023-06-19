@@ -1,41 +1,110 @@
-import React, { useContext } from 'react'
-import HeadPage from './HeadPage'
-import URLPage from './URLPage'
-import { AppContext } from '../App'
-import { Outlet } from 'react-router-dom'
+import { useFormik } from "formik";
+import React, { useState } from "react";
+import * as yup from "yup";
+import HeadPage from "./HeadPage";
+import { useNavigate } from "react-router-dom";
+const URLCreatePage= () => {
+    const navTo=useNavigate();
+    const[state,setState]=useState("");
+    const[short,setShort]=useState("");
+  const fieldValidationSchema = yup.object({
+    urlName: yup
+      .string()
+      .required("Please provide name for url"),
+    long_url: yup
+      .string()
+      .required("Please enter url"),
+  });
 
-const URLCreatePage = () => {
-    const{urlList,setUrlList}=useContext(AppContext);
-    async function getUrlList(){
+  const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
+    useFormik({
+      initialValues: {
+        long_url: "",
+        urlName: "",
+      },
+      validationSchema: fieldValidationSchema,
+      onSubmit: async (urlInfo) => {
+        setState("Please wait...")
         try {
-            console.log("it is working")
-            const response=await fetch("https://short-url-backend.vercel.app/shorturl");
+            const response=await fetch("https://short-url-backend.vercel.app/newshorturl",
+            {
+              method: "POST",
+              body: JSON.stringify(urlInfo),
+              headers: {
+                "Content-Type": "application/json",
+                email: localStorage["url-short-email"],
+                "x-auth-token": localStorage["url-short-token"],
+              },
+            }
+            );
             const data=await response.json();
-            if(data.shorturls){
-                setUrlList(...data.shorturls);
+            if(data.message === "success"){
+                const shortURL="https://short-url-backend.vercel.app/"+(data.newUrl.short_url);
+                setShort("--Shorted URL--")
+                setState(shortURL)
             }
             else{
-                setUrlList([]);
+                setState(data.message)
             }
+
+              
         } catch (error) {
-            console.log(error)
+            console.log("Error....",error)
         }
-        getUrlList();
+      },
+    });
+    function handleroute(){
+        navTo('/urlpage');
     }
   return (
-    <>
-    <HeadPage/>
-    <div className='m-5'>
-        <form>
-            <input className='form-control mb-3' type='text' placeholder='enter url'/>
-            <input className='form-control mb-3' type='text' placeholder='Name for url'/>
-            <input className='btn btn-success' type='submit' value={"Generate Short URL"}/>
-        </form>
-        
+    <div className="">
+      <HeadPage/>
+      <form className="text-start p-5" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label for="urlName">Url name</label>
+          <input
+            type="urlName"
+            className={`form-control my-2 ${
+              touched.urlName && errors.urlName ? "border-danger border-2" : ""
+            }`}
+            id="urlName"
+            placeholder={`${
+              touched.urlName && errors.urlName ? errors.urlName : "Enter Url name"
+            }`}
+            value={values.urlName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="form-group">
+          <label for="exampleInputPassword1">URL</label>
+          <input
+            type="long_url"
+            className={`form-control my-2 ${
+              touched.long_url && errors.long_url
+                ? "border-danger border-2"
+                : ""
+            }`}
+            id="long_url"
+            placeholder={` ${
+              touched.long_url && errors.long_url ? errors.long_url : "Enter long_url"
+            }`}
+            value={values.long_url}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="text-center m-3">
+            {short}<br/><br/>
+          {state}<br/><br/>
+          {short==="" &&<button type="submit" className="btn btn-success px-5">
+            Generate
+          </button>}
+        </div>
+      </form>
+      <button className="mb-3 btn btn-primary" onClick={()=>handleroute()}>Click to url list page</button>
     </div>
-    <Outlet/>
-    </>
-  )
-}
+  );
+};
 
-export default URLCreatePage
+export default URLCreatePage;
