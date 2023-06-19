@@ -44,7 +44,7 @@ const URLPage = () => {
           className="row p-3 justify-content-between"
           style={{ width: "100%" }}
         >
-          {urlList.length === 0 && <h1>No Url have created</h1>}
+          {urlList.length === 0 && <h3 className="text-muted">NO URL HAVE CREATED</h3>}
           {urlList.length > 0 &&
             urlList.map((ele, idx) => (
               <div className="col-md-3 mb-3" style={{ height: "100%" }}>
