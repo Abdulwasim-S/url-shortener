@@ -5,7 +5,6 @@ import * as yup from "yup";
 import HeadPage from "./HeadPage";
 const LoginPage = () => {
   const navTo=useNavigate();
-  const [state,setState]=useState(false);
   const [loginInfo,setLoginInfo]=useState("");
   const fieldValidationSchema = yup.object({
     email: yup
@@ -25,7 +24,7 @@ const LoginPage = () => {
       validationSchema: fieldValidationSchema,
       onSubmit: async (loginInfo) => {
         try {
-          setLoginInfo("")
+          setLoginInfo("Please wait")
             const response=await fetch("https://short-url-backend.vercel.app/login",
             {
               method: "POST",
@@ -92,8 +91,8 @@ const LoginPage = () => {
           />
         </div>
         <div className="text-center m-3">
-          {state && <p className="text-danger">Invalid credentials</p>}<br/>
-          {loginInfo}
+          <p className="text-danger">{loginInfo}</p><br/>
+          
           <button type="submit" className="btn btn-success px-5">
             LogIn
           </button>
