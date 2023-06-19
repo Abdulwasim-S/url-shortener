@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import HeadPage from "./HeadPage";
 const LoginPage = () => {
   const navTo=useNavigate();
   const [state,setState]=useState(false);
@@ -52,6 +53,7 @@ const LoginPage = () => {
 
   return (
     <div className="">
+      <HeadPage/>
         <h1>LogIn Page</h1>
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
