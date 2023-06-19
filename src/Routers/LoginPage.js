@@ -92,7 +92,7 @@ const LoginPage = () => {
           />
         </div>
         <div className="text-center m-3">
-          {state && <p className="text-danger">Invalid credentials</p>}
+          {state && <p className="text-danger">Invalid credentials</p>}<br/>
           {loginInfo}
           <button type="submit" className="btn btn-success px-5">
             LogIn
