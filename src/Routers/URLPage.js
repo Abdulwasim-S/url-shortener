@@ -86,17 +86,17 @@ const URLPage = () => {
         </NavLink>
         <div
           className="row p-3 justify-content-between"
-          style={{ width: "100%" }}
         >
           {tableColumn.length === 0 && (
             <h3 className="text-muted">NO URL HAVE CREATED</h3>
           )}
-          <div className="" style={{ overflowX: "auto" }}>
+          <div className="">
             {tableColumn.length > 0 && (
               <>
-                <h4>URL List Table</h4>
+                <h4>URL List Table</h4><br/>
                 <Table
                   className=""
+                  style={{ overflowX: "auto" }}
                   dataSource={tableColumn}
                   columns={columns}
                 />
