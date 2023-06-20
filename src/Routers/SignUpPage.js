@@ -5,34 +5,29 @@ import * as yup from "yup";
 import HeadPage from "./HeadPage";
 
 const SignUpPage = () => {
-  const navTo=useNavigate();
-  const [passwordState,setPasswordState]=useState("");
-  const [signup_response,setResponse]=useState("");
+  const navTo = useNavigate();
+  const [passwordState, setPasswordState] = useState("");
+  const [signup_response, setResponse] = useState("");
   const fieldValidationSchema = yup.object({
-    userName: yup
-      .string()
-      .required("Please enter valid username"),
-    email: yup
-      .string()
-      .required("Please enter valid email"),
-    password: yup
-      .string()
-      .required("Please enter valid password"),
+    userName: yup.string().required("Please enter valid username"),
+    email: yup.string().required("Please enter valid email"),
+    password: yup.string().required("Please enter valid password"),
   });
 
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
       initialValues: {
-        userName:"",
+        userName: "",
         email: "",
         password: "",
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (signUpInfo) => {
-        setResponse("Please wait....")
-        localStorage.setItem("url-short-email",signUpInfo.email);
+        setResponse("Please wait....");
+        localStorage.setItem("url-short-email", signUpInfo.email);
         try {
-            const response=await fetch("https://short-url-backend.vercel.app/signup",
+          const response = await fetch(
+            "https://short-url-backend.vercel.app/signup",
             {
               method: "POST",
               body: JSON.stringify(signUpInfo),
@@ -40,51 +35,54 @@ const SignUpPage = () => {
                 "Content-Type": "application/json",
               },
             }
-            );
-            const data=await response.json();
-            
-            if(data.message === "Check your mail for activation link"){
-              setResponse("")
-              navTo('/checkmail')
-            }
-            else{
-              setResponse(data.message)
-            }
-              
+          );
+          const data = await response.json();
+
+          if (data.message === "Check your mail for activation link") {
+            setResponse("");
+            navTo("/checkmail");
+          } else {
+            setResponse(data.message);
+          }
         } catch (error) {
-          setResponse("Try Again...")
-            console.log("Error....",error)
+          setResponse("Try Again...");
+          console.log("Error....", error);
         }
       },
     });
-    function testPassword(password){
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.[a-z])[a-zA-z-9].{8,15}$/;
-        if(passwordRegex.test(password)){
-            values.password=password;
-            setPasswordState("");
-        }
-        else{
-            values.password="";
-            setPasswordState("*password must contain Uppercase,lowercase,number,min-length should be 8");
-        }
+  function testPassword(password) {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.[a-z])[a-zA-z-9].{8,15}$/;
+    if (passwordRegex.test(password)) {
+      values.password = password;
+      setPasswordState("");
+    } else {
+      values.password = "";
+      setPasswordState(
+        "*password must contain Uppercase,lowercase,number,min-length should be 8"
+      );
     }
+  }
 
   return (
     <div className="">
-      <HeadPage/>
-        <h1>SignUp Page</h1>
+      <HeadPage />
+      <h1>SignUp Page</h1>
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="exampleInputEmail1">Username</label>
           <input
             type="userName"
             className={`form-control my-2 ${
-              touched.userName && errors.userName ? "border-danger border-2" : ""
+              touched.userName && errors.userName
+                ? "border-danger border-2"
+                : ""
             }`}
             id="userName"
             aria-describedby="usernameHelp"
             placeholder={`${
-              touched.userName && errors.userName ? errors.userName : "Enter username"
+              touched.userName && errors.userName
+                ? errors.userName
+                : "Enter username"
             }`}
             value={values.userName}
             onChange={handleChange}
@@ -119,9 +117,11 @@ const SignUpPage = () => {
             }`}
             id="password"
             placeholder={` ${
-              touched.password && errors.password ? errors.password : "Enter password"
+              touched.password && errors.password
+                ? errors.password
+                : "Enter password"
             }`}
-            onChange={(e)=>testPassword(e.target.value)}
+            onChange={(e) => testPassword(e.target.value)}
             onBlur={handleBlur}
           />
           <small className="text-danger">{passwordState}</small>
@@ -133,9 +133,15 @@ const SignUpPage = () => {
         </div>
       </form>
       <div>
-        <span className="text-danger">{signup_response}</span><br/>
-        <NavLink className="mb-3" to='/forgetpassword'>Forget Password</NavLink><br/>
-        <NavLink className="mb-3" to='/login'>LogIn</NavLink>
+        <span className="text-danger">{signup_response}</span>
+        <br />
+        <NavLink className="mb-3" to="/forgetpassword">
+          Forget Password
+        </NavLink>
+        <br />
+        <NavLink className="mb-3" to="/login">
+          LogIn
+        </NavLink>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {  NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import HeadPage from "./HeadPage";
+import { Table } from "antd";
 
 const URLPage = () => {
-  const [urlList, setUrlList] = useState([]);
+  const [tableColumn, setTableColumn] = useState([]);
   useEffect(() => {
     async function getUrlList() {
       try {
@@ -20,9 +21,23 @@ const URLPage = () => {
         );
         const data = await response.json();
         if (data.message === "shorturls") {
-          setUrlList(data.shortUrls);
+          const values = data.shortUrls.map((ele, idx) => {
+            return {
+              urlName: ele.urlName,
+              short_url: (
+                <a
+                  href={`https://short-url-backend.vercel.app/${ele.short_url}`}
+                >
+                  https://short-url-backend.vercel.app/{ele.short_url}
+                </a>
+              ),
+              click_count: ele.click_count,
+              key: idx,
+            };
+          });
+          setTableColumn(values);
         } else {
-          setUrlList([]);
+          setTableColumn([]);
           console.log(data.message);
         }
       } catch (error) {
@@ -31,6 +46,35 @@ const URLPage = () => {
     }
     getUrlList();
   }, []);
+
+  const columns = [
+    {
+      title: "S.No",
+      dataIndex: "key",
+      key: "1",
+      sorter: (a, b) => {
+        return a.key > b.key;
+      },
+    },
+    {
+      title: "Name",
+      dataIndex: "urlName",
+      key: "2",
+      sorter: (a, b) => {
+        return a.urlName > b.urlName;
+      },
+    },
+    {
+      title: "Link",
+      dataIndex: "short_url",
+      key: "3",
+    },
+    {
+      title: "Count",
+      dataIndex: "click_count",
+      key: "4",
+    },
+  ];
 
   return (
     <div>
@@ -44,24 +88,21 @@ const URLPage = () => {
           className="row p-3 justify-content-between"
           style={{ width: "100%" }}
         >
-          {urlList.length === 0 && <h3 className="text-muted">NO URL HAVE CREATED</h3>}
-          {urlList.length > 0 &&
-            urlList.map((ele, idx) => (
-              <div className="col-md-3 mb-3" style={{ height: "100%" }}>
-                <div class="card pt-3">
-                  <small>Name :</small>
-                  <h3>{ele.urlName}</h3>
-                  <small>URL :</small>
-                  <NavLink
-                    className="card-url text-primary"
-                    to={`https://short-url-backend.vercel.app/${ele.short_url}`}
-                  >
-                    https://short-url-backend.vercel.app/{ele.short_url}
-                  </NavLink>
-                  <p>Click count : {ele.click_count}</p>
-                </div>
-              </div>
-            ))}
+          {tableColumn.length === 0 && (
+            <h3 className="text-muted">NO URL HAVE CREATED</h3>
+          )}
+          <div className="" style={{ overflowX: "auto" }}>
+            {tableColumn.length > 0 && (
+              <>
+                <h4>URL List Table</h4>
+                <Table
+                  className=""
+                  dataSource={tableColumn}
+                  columns={columns}
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

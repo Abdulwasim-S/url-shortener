@@ -4,15 +4,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import HeadPage from "./HeadPage";
 const LoginPage = () => {
-  const navTo=useNavigate();
-  const [loginInfo,setLoginInfo]=useState("");
+  const navTo = useNavigate();
+  const [loginInfo, setLoginInfo] = useState("");
   const fieldValidationSchema = yup.object({
-    email: yup
-      .string()
-      .required("Please enter valid email"),
-    password: yup
-      .string()
-      .required("Please enter valid password"),
+    email: yup.string().required("Please enter valid email"),
+    password: yup.string().required("Please enter valid password"),
   });
 
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
@@ -24,8 +20,9 @@ const LoginPage = () => {
       validationSchema: fieldValidationSchema,
       onSubmit: async (loginInfo) => {
         try {
-          setLoginInfo("Please wait")
-            const response=await fetch("https://short-url-backend.vercel.app/login",
+          setLoginInfo("Please wait");
+          const response = await fetch(
+            "https://short-url-backend.vercel.app/login",
             {
               method: "POST",
               body: JSON.stringify(loginInfo),
@@ -33,27 +30,25 @@ const LoginPage = () => {
                 "Content-Type": "application/json",
               },
             }
-            );
-            const data=await response.json();
-            if(data.message==="login success"){
-              localStorage.setItem("url-short-token",data.token)
-              localStorage.setItem("url-short-email", data.email)
-              navTo('/urlpage')
-            }
-            else{
-              setLoginInfo(data.message)
-            }
-              
+          );
+          const data = await response.json();
+          if (data.message === "login success") {
+            localStorage.setItem("url-short-token", data.token);
+            localStorage.setItem("url-short-email", data.email);
+            navTo("/urlpage");
+          } else {
+            setLoginInfo(data.message);
+          }
         } catch (error) {
-            console.log("Error....",error)
+          console.log("Error....", error);
         }
       },
     });
 
   return (
     <div className="">
-      <HeadPage/>
-        <h1>LogIn Page</h1>
+      <HeadPage />
+      <h1>LogIn Page</h1>
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="exampleInputEmail1">Email address</label>
@@ -83,7 +78,9 @@ const LoginPage = () => {
             }`}
             id="password"
             placeholder={` ${
-              touched.password && errors.password ? errors.password : "Enter password"
+              touched.password && errors.password
+                ? errors.password
+                : "Enter password"
             }`}
             value={values.password}
             onChange={handleChange}
@@ -91,16 +88,22 @@ const LoginPage = () => {
           />
         </div>
         <div className="text-center m-3">
-          <p className="text-danger">{loginInfo}</p><br/>
-          
+          <p className="text-danger">{loginInfo}</p>
+          <br />
+
           <button type="submit" className="btn btn-success px-5">
             LogIn
           </button>
         </div>
       </form>
       <div>
-        <NavLink className="mb-3" to='/forgetpassword'>Forget Password</NavLink><br/>
-        <NavLink className="mb-3" to='/signup'>SignUp</NavLink>
+        <NavLink className="mb-3" to="/forgetpassword">
+          Forget Password
+        </NavLink>
+        <br />
+        <NavLink className="mb-3" to="/signup">
+          SignUp
+        </NavLink>
       </div>
     </div>
   );

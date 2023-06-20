@@ -3,17 +3,13 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import HeadPage from "./HeadPage";
 import { useNavigate } from "react-router-dom";
-const URLCreatePage= () => {
-    const navTo=useNavigate();
-    const[state,setState]=useState("");
-    const[short,setShort]=useState("");
+const URLCreatePage = () => {
+  const navTo = useNavigate();
+  const [state, setState] = useState("");
+  const [short, setShort] = useState("");
   const fieldValidationSchema = yup.object({
-    urlName: yup
-      .string()
-      .required("Please provide name for url"),
-    long_url: yup
-      .string()
-      .required("Please enter url"),
+    urlName: yup.string().required("Please provide name for url"),
+    long_url: yup.string().required("Please enter url"),
   });
 
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
@@ -24,9 +20,10 @@ const URLCreatePage= () => {
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (urlInfo) => {
-        setState("Please wait...")
+        setState("Please wait...");
         try {
-            const response=await fetch("https://short-url-backend.vercel.app/newshorturl",
+          const response = await fetch(
+            "https://short-url-backend.vercel.app/newshorturl",
             {
               method: "POST",
               body: JSON.stringify(urlInfo),
@@ -36,29 +33,27 @@ const URLCreatePage= () => {
                 "x-auth-token": localStorage["url-short-token"],
               },
             }
-            );
-            const data=await response.json();
-            if(data.message === "success"){
-                const shortURL="https://short-url-backend.vercel.app/"+(data.newUrl.short_url);
-                setShort("--Shorted URL--")
-                setState(shortURL)
-            }
-            else{
-                setState(data.message)
-            }
-
-              
+          );
+          const data = await response.json();
+          if (data.message === "success") {
+            const shortURL =
+              "https://short-url-backend.vercel.app/" + data.newUrl.short_url;
+            setShort("--Shorted URL--");
+            setState(shortURL);
+          } else {
+            setState(data.message);
+          }
         } catch (error) {
-            console.log("Error....",error)
+          console.log("Error....", error);
         }
       },
     });
-    function handleroute(){
-        navTo('/urlpage');
-    }
+  function handleroute() {
+    navTo("/urlpage");
+  }
   return (
     <div className="">
-      <HeadPage/>
+      <HeadPage />
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="urlName">Url name</label>
@@ -69,7 +64,9 @@ const URLCreatePage= () => {
             }`}
             id="urlName"
             placeholder={`${
-              touched.urlName && errors.urlName ? errors.urlName : "Enter Url name"
+              touched.urlName && errors.urlName
+                ? errors.urlName
+                : "Enter Url name"
             }`}
             value={values.urlName}
             onChange={handleChange}
@@ -87,7 +84,9 @@ const URLCreatePage= () => {
             }`}
             id="long_url"
             placeholder={` ${
-              touched.long_url && errors.long_url ? errors.long_url : "Enter long_url"
+              touched.long_url && errors.long_url
+                ? errors.long_url
+                : "Enter long_url"
             }`}
             value={values.long_url}
             onChange={handleChange}
@@ -95,14 +94,22 @@ const URLCreatePage= () => {
           />
         </div>
         <div className="text-center m-3">
-            {short}<br/><br/>
-          {state}<br/><br/>
-          {short==="" &&<button type="submit" className="btn btn-success px-5">
-            Generate
-          </button>}
+          {short}
+          <br />
+          <br />
+          {state}
+          <br />
+          <br />
+          {short === "" && (
+            <button type="submit" className="btn btn-success px-5">
+              Generate
+            </button>
+          )}
         </div>
       </form>
-      <button className="mb-3 btn btn-primary" onClick={()=>handleroute()}>Click to url list page</button>
+      <button className="mb-3 btn btn-primary" onClick={() => handleroute()}>
+        Click to url list page
+      </button>
     </div>
   );
 };

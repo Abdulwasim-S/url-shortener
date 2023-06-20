@@ -5,12 +5,10 @@ import * as yup from "yup";
 import HeadPage from "./HeadPage";
 
 const Forgetpassword = () => {
-  const navTo=useNavigate();
-  const [state,setState]=useState("")
+  const navTo = useNavigate();
+  const [state, setState] = useState("");
   const fieldValidationSchema = yup.object({
-    email: yup
-      .string()
-      .required("Please enter valid email")
+    email: yup.string().required("Please enter valid email"),
   });
 
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
@@ -22,7 +20,8 @@ const Forgetpassword = () => {
       onSubmit: async (loginInfo) => {
         try {
           setState("Please wait...");
-            const response=await fetch("https://short-url-backend.vercel.app/forgetpassword",
+          const response = await fetch(
+            "https://short-url-backend.vercel.app/forgetpassword",
             {
               method: "PUT",
               body: JSON.stringify(loginInfo),
@@ -30,27 +29,25 @@ const Forgetpassword = () => {
                 "Content-Type": "application/json",
               },
             }
-            );
-            const data=await response.json();
-            if(data.token) {
-              localStorage.setItem("forget-password-token", data.token);
-              localStorage.setItem("url-short-email",loginInfo.email);
-              navTo('/checkmail');
-            }
-            else{
-              setState(data.message);
-            }
-              
+          );
+          const data = await response.json();
+          if (data.token) {
+            localStorage.setItem("forget-password-token", data.token);
+            localStorage.setItem("url-short-email", loginInfo.email);
+            navTo("/checkmail");
+          } else {
+            setState(data.message);
+          }
         } catch (error) {
-            console.log("Error....",error)
+          console.log("Error....", error);
         }
       },
     });
 
   return (
     <div className="">
-      <HeadPage/>
-        <h1>Forget Password</h1>
+      <HeadPage />
+      <h1>Forget Password</h1>
       <form className="text-start p-5" onSubmit={handleSubmit}>
         <div className="form-group">
           <label for="exampleInputEmail1">Email address</label>
@@ -77,10 +74,11 @@ const Forgetpassword = () => {
       </form>
       <small className="">{state}</small>
       <div>
-        <NavLink className="mb-3" to='/login'>back to login page</NavLink>
+        <NavLink className="mb-3" to="/login">
+          back to login page
+        </NavLink>
       </div>
     </div>
-    
   );
 };
 
