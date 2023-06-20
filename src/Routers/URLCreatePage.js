@@ -34,12 +34,13 @@ const URLCreatePage = () => {
               },
             }
           );
+
           const data = await response.json();
           if (data.message === "success") {
             const shortURL =
               "https://short-url-backend.vercel.app/" + data.newUrl.short_url;
             setShort("--Shorted URL--");
-            setState(shortURL);
+            setState(<a href={shortURL}>{shortURL}</a>);
           } else {
             setState(data.message);
           }
