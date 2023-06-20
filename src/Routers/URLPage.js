@@ -70,7 +70,7 @@ const URLPage = () => {
       key: "3",
     },
     {
-      title: "Count",
+      title: "Click count",
       dataIndex: "click_count",
       key: "4",
     },
