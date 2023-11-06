@@ -44,6 +44,10 @@ const LoginPage = () => {
         }
       },
     });
+  const demo = () => {
+    values.email = "demo@demo.in";
+    values.password = "Password@123";
+  };
 
   return (
     <div className="">
@@ -93,6 +97,11 @@ const LoginPage = () => {
 
           <button type="submit" className="btn btn-success px-5">
             LogIn
+          </button>
+          <br />
+          <br />
+          <button type="submit" className="btn btn-success px-5" onClick={demo}>
+            Demo LogIn
           </button>
         </div>
       </form>
